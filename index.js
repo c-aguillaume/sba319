@@ -16,7 +16,7 @@ app.use(express.urlencoded())  //  parses incoming requests with urlencoded payl
 // the end point where the user sees the form to register
 app.get('/views/register', (req, res, next) => {
     res.render("register", {   // rendering out a file
-        userName: "Nathan"
+        userName: "Chris"
     })
 })
 // submit button takes the user to this post
@@ -36,5 +36,5 @@ app.use("/api/posts", postsRoutes);
 app.use("/api/comments", commentRoutes);
 
 app.listen(port, () => {
-  console.log("listening");
+  console.log(`The server is listening on port ${port}` );
 });
