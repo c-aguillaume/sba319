@@ -1,33 +1,51 @@
 const express = require("express");
 const app = express();
-const port = 4000;
-const router = express.Router();
+const PORT = 8000;
+// const router = express.Router();
 const userRoutes = require("./Resources/Users/users.js");
 const postsRoutes = require("./Resources/Posts/posts.js");
 const commentRoutes = require("./Resources/Comments/comments.js");
 const db = require("./db.js");
+const dotenv = require("dotenv");
+const mongoose = require("mongoose");
+const path = require("path"); // Import the path module
 
-app.set("view engine", "ejs")  // we installed npm i ejs
+
+dotenv.config();
+
+mongoose
+  .connect(process.env.MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log("MongoDB connected");
+  })
+  .catch((err) => {
+    console.error("Error connecting to MongoDB:", err);
+  });
+
+app.set("view engine", "ejs"); // we installed npm i ejs
+
+// express.static built-in middleware to serve static files (img, css, js); path.join(__dirname) helps ensure 
+// the current scripts directory path (even if folder/file is moved)
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(express.json()); // middleware that defines to always parse as json
-
-app.use(express.urlencoded())  //  parses incoming requests with urlencoded payloads
+// when is this actually applied??
+app.use(express.urlencoded({ extended: true })); //  parses incoming requests with urlencoded payloads
 
 // the end point where the user sees the form to register
-app.get('/views/register', (req, res, next) => {
-    res.render("register", {   // rendering out a file
-        userName: "Chris"
-    })
-})
-// submit button takes the user to this post
-// app.post('/validateRegister', (req, res, next) => {  
-//     console.log(req.body)
-//     res.send()
-// })
+app.get("/views/register", (req, res, next) => {
+  res.render("register", {
+    // rendering out a file
+    userName: "Chris",
+  });
+});
 
-app.get('/views/login', (req, res, next) => {
-    res.render("login")     // rendering out a file login.ejs
-})
+app.get("/views/login", (req, res, next) => {
+  res.render("login"); // rendering out a file login.ejs
+});
 
 app.use("/api/users", userRoutes);
 
@@ -35,6 +53,6 @@ app.use("/api/posts", postsRoutes);
 
 app.use("/api/comments", commentRoutes);
 
-app.listen(port, () => {
-  console.log(`The server is listening on port ${port}` );
+app.listen(PORT, () => {
+  console.log("listening");
 });
