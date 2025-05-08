@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = 8000;
+const port = 4000;
 const router = express.Router();
 const userRoutes = require("./Resources/Users/users.js");
 const postsRoutes = require("./Resources/Posts/posts.js");
