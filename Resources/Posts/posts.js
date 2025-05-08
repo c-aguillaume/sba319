@@ -3,7 +3,7 @@ const postsRoutes = express.Router()
 const posts = [
 {
     userId: 1,
-    title: "Todays topic",
+    title: "Brooklyn NYC (First Topic)",
     message: ""
 
 }
